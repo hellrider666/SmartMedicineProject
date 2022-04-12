@@ -1,36 +1,38 @@
-﻿const { post } = require("jquery");
+﻿document.forms['form'].onsubmit = function (e) {
+    e.preventDefault();
+    enter();
+
+}
 
 function enter() {
+    debugger;
     var email = document.getElementById('email').value;
     var password = document.getElementById('password').value;
-    var errorLabel = $('#errorText');
-    //$.get('../Home/LogintoAccount?login=' + email, 'password=' + password);
+    var errorLabel = document.getElementById('errorText');
 
-    $.ajax({
-        
-        url: '../Account/LogintoAccount',       
-        data: {           
+    $.ajax({       
+        type: 'POST',       
+        url: '../Account/LogintoAccount',
+        data:  {
             login: email,
             password: password
         },
-              
-        success: function (data) {           
-                location.reload();           
+        dataType: 'json',
+        success: function (data) {            
+            //console.log(data);
+            if (JSON.parse(data) === false)
+            {
+                errorLabel.innerHTML = 'Неверный логин или пароль!';
+                setTimeout(function () { errorLabel.innerHTML = ''; }, 2500);
+            }
+            else
+            {
+                location.reload();
+            }                       
         },
         error: function (data) {
-            errorLabel.text = 'Ошибка';
+            //console.log(data);
+            alert('Ошибка');            
         }
-    });
-    
-   /* $.ajax({
-        get('../Account/LogintoAccount?login=' + email, 'password=' + password).then(function (resp) {
-            var ingridients = JSON.parse(resp);
-
-
-        });
-    });*/
-    (document).ready(function () {
-        enter();
-    });
-    
+    });             
 }

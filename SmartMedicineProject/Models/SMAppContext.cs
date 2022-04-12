@@ -8,6 +8,7 @@ namespace SmartMedicineProject.Models
 {
     public class SMAppContext : DbContext
     {
+        public DbSet<RecordModel> recordModels { get; set; }
         public DbSet<DoctorFullInfo> doctorFullInfos { get; set; }
         public DbSet<DoctorUser> doctorUsers { get; set; }
         public DbSet<RoleModel> roleModels { get; set; }

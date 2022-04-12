@@ -63,6 +63,29 @@ namespace SmartMedicineProject.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "recordModels",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DoctorUserId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_recordModels", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_recordModels_doctorUsers_DoctorUserId",
+                        column: x => x.DoctorUserId,
+                        principalTable: "doctorUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.InsertData(
                 table: "roleModels",
                 columns: new[] { "Id", "Name" },
@@ -82,12 +105,20 @@ namespace SmartMedicineProject.Migrations
                 name: "IX_doctorUsers_RoleModelId",
                 table: "doctorUsers",
                 column: "RoleModelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_recordModels_DoctorUserId",
+                table: "recordModels",
+                column: "DoctorUserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "doctorFullInfos");
+
+            migrationBuilder.DropTable(
+                name: "recordModels");
 
             migrationBuilder.DropTable(
                 name: "doctorUsers");

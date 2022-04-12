@@ -16,6 +16,7 @@ namespace SmartMedicineProject.Models
         public int? RoleModelId { get; set; }
         public RoleModel RoleModel { get; set; }     
         public IEnumerable<DoctorFullInfo> doctorFullInfos { get; set; }
+        public IEnumerable<RecordModel> recordModels { get; set; }
         
     }
 }

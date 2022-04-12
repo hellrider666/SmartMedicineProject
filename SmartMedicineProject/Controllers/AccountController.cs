@@ -20,30 +20,8 @@ namespace SmartMedicineProject.Controllers
         {
             db = context;
         }
-        [HttpGet]
-        public IActionResult Login()
-        {
-            return View();
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                DoctorUser user = await db.doctorUsers.Include(p => p.RoleModel).FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
-                if (user != null)
-                {
-                   
-                    
-                    await Authenticate(user); // аутентификация
-
-                    return RedirectToAction("MainView", "DoctorViews");
-                }
-                ModelState.AddModelError("", "Некорректные логин и(или) пароль");
-            }
-            return View(model);
-        }
+        
+        
         [HttpGet]
         public IActionResult Register()
         {
@@ -79,33 +57,21 @@ namespace SmartMedicineProject.Controllers
             }
             return View(model);
         }
-        public async Task<EmptyResult> LogintoAccount(string login, string password)
+        [HttpPost]
+        public async Task<JsonResult> LogintoAccount(string login, string password)
         {
-            
+            bool error = false;
                 DoctorUser user = await db.doctorUsers.Include(p => p.RoleModel).FirstOrDefaultAsync(u => u.Email == login && u.Password == password);
                 if (user != null)
                 {
-
-
+                    error = true;
                     await Authenticate(user); // аутентификация
-
-                    RedirectToAction("MainView", "DoctorViews");
+                    RedirectToAction("MainView", "DoctorViews");               
                 }
 
-            return new EmptyResult();
+            return Json(error);
         }
-       /*
-        public async Task<JsonResult> LogintoAccount(string login, string password)
-        {           
-            DoctorUser user = await db.doctorUsers.Include(p => p.RoleModel).FirstOrDefaultAsync(u => u.Email == login && u.Password == password);
-            if (user != null)
-            {
-                await Authenticate(user); // аутентификация
-                RedirectToAction("MainView", "DoctorViews");
-                
-            }           
-            return Json(user);
-        }*/
+       
         private async Task Authenticate(DoctorUser user)
         {
             // создаем один claim

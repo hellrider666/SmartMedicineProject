@@ -26,10 +26,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         @if (User.Identity.Name == null)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
-                            </li>
+                        {                          
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
                             </li>
@@ -58,13 +55,11 @@
             <div class="pop_up_cont">
                 <div class="pop_up_body">
                     <p>Авторизация</p>
-                    <form action="">
-
-                        <input id="email" type="text" placeholder="Почта">
-                        <input id="password" type="password" placeholder="Пароль">
-
-                    </form>
-                    <button type="button" onclick="enter()">Войти</button>
+                    <form id="form">
+                        <input id="email" type="text" placeholder="Почта" required>
+                        <input id="password" type="password" placeholder="Пароль" required>
+                        <button type="submit" >Войти</button>
+                    </form>                  
                     <div class="pop_up_error"><label id="errorText"></label></div>
                     <div id="close_pop_up" class="pop_up_close">&#10006</div>
                 </div>
@@ -76,13 +71,13 @@
             @RenderBody()
         </main>
     </div>
-    
-    
+
+
     <script src="~/js/popup.js"></script>
     <script src="~/js/login.js"></script>
 
-        
-    
+
+
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2022 - SmartMedicineProject - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
@@ -91,6 +86,10 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+    <script src="/lib/jquery-validation/dist/jquery.validate.js"></script>
+
+   
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

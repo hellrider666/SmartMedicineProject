@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using SmartMedicineProject.Models;
+using SmartMedicineProject.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -28,7 +29,16 @@ namespace SmartMedicineProject.Controllers
         
         public IActionResult Index()
         {
+
             return View();
+        }
+       
+        public async Task<JsonResult> Recording (string fullname, string email, string phonenumber, string address)
+        {
+            RecordModel recordModel = new RecordModel {FullName = fullname, Email = email, PhoneNumber = phonenumber, Address = address };
+            await db.recordModels.AddAsync(recordModel);
+            await db.SaveChangesAsync();
+            return Json(recordModel);
         }
         [Authorize(Roles = "Admin")]
         public IActionResult Privacy()
@@ -41,19 +51,7 @@ namespace SmartMedicineProject.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        
-        private async Task Authenticate(DoctorUser user)
-        {
-            // создаем один claim
-            var claims = new List<Claim>
-            {
-               new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.RoleModel?.Name)
-            };
-            // создаем объект ClaimsIdentity
-            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
-            // установка аутентификационных куки
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
-        }
+       
+       
     }
 }

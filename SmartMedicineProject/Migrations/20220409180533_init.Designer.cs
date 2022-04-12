@@ -10,7 +10,7 @@ using SmartMedicineProject.Models;
 namespace SmartMedicineProject.Migrations
 {
     [DbContext(typeof(SMAppContext))]
-    [Migration("20220408091306_init")]
+    [Migration("20220409180533_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -73,6 +73,35 @@ namespace SmartMedicineProject.Migrations
                     b.ToTable("doctorUsers");
                 });
 
+            modelBuilder.Entity("SmartMedicineProject.Models.RecordModel", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("DoctorUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("DoctorUserId");
+
+                    b.ToTable("recordModels");
+                });
+
             modelBuilder.Entity("SmartMedicineProject.Models.RoleModel", b =>
                 {
                     b.Property<int>("Id")
@@ -118,9 +147,20 @@ namespace SmartMedicineProject.Migrations
                     b.Navigation("RoleModel");
                 });
 
+            modelBuilder.Entity("SmartMedicineProject.Models.RecordModel", b =>
+                {
+                    b.HasOne("SmartMedicineProject.Models.DoctorUser", "DoctorUser")
+                        .WithMany("recordModels")
+                        .HasForeignKey("DoctorUserId");
+
+                    b.Navigation("DoctorUser");
+                });
+
             modelBuilder.Entity("SmartMedicineProject.Models.DoctorUser", b =>
                 {
                     b.Navigation("doctorFullInfos");
+
+                    b.Navigation("recordModels");
                 });
 
             modelBuilder.Entity("SmartMedicineProject.Models.RoleModel", b =>
