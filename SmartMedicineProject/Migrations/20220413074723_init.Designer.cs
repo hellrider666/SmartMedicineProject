@@ -10,7 +10,7 @@ using SmartMedicineProject.Models;
 namespace SmartMedicineProject.Migrations
 {
     [DbContext(typeof(SMAppContext))]
-    [Migration("20220409180533_init")]
+    [Migration("20220413074723_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,6 +21,35 @@ namespace SmartMedicineProject.Migrations
                 .HasAnnotation("ProductVersion", "5.0.15")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("SmartMedicineProject.Models.AnalysisModel", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("AnalysisDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RecordModelID")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Result")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ResultInfo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("RecordModelID");
+
+                    b.ToTable("analysisModels");
+                });
+
             modelBuilder.Entity("SmartMedicineProject.Models.DoctorFullInfo", b =>
                 {
                     b.Property<int>("ID")
@@ -28,11 +57,32 @@ namespace SmartMedicineProject.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Adress")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("DateBorn")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("DoctorUserId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Education")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Exp")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PassportSerialNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Position")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TIN_passport")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
@@ -60,6 +110,9 @@ namespace SmartMedicineProject.Migrations
                     b.Property<string>("Patronymic")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PersonalCode")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("RoleModelId")
                         .HasColumnType("int");
 
@@ -71,6 +124,35 @@ namespace SmartMedicineProject.Migrations
                     b.HasIndex("RoleModelId");
 
                     b.ToTable("doctorUsers");
+                });
+
+            modelBuilder.Entity("SmartMedicineProject.Models.PacientMedCart", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateBorn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Info")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RecordModelId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("RecordModelId");
+
+                    b.ToTable("pacientMedCarts");
                 });
 
             modelBuilder.Entity("SmartMedicineProject.Models.RecordModel", b =>
@@ -94,6 +176,9 @@ namespace SmartMedicineProject.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RecordDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("ID");
 
@@ -125,8 +210,19 @@ namespace SmartMedicineProject.Migrations
                         new
                         {
                             Id = 2,
-                            Name = "User"
+                            Name = "Doctor"
                         });
+                });
+
+            modelBuilder.Entity("SmartMedicineProject.Models.AnalysisModel", b =>
+                {
+                    b.HasOne("SmartMedicineProject.Models.RecordModel", "RecordModel")
+                        .WithMany("analysisModels")
+                        .HasForeignKey("RecordModelID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RecordModel");
                 });
 
             modelBuilder.Entity("SmartMedicineProject.Models.DoctorFullInfo", b =>
@@ -147,6 +243,17 @@ namespace SmartMedicineProject.Migrations
                     b.Navigation("RoleModel");
                 });
 
+            modelBuilder.Entity("SmartMedicineProject.Models.PacientMedCart", b =>
+                {
+                    b.HasOne("SmartMedicineProject.Models.RecordModel", "RecordModel")
+                        .WithMany("pacientMedCarts")
+                        .HasForeignKey("RecordModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RecordModel");
+                });
+
             modelBuilder.Entity("SmartMedicineProject.Models.RecordModel", b =>
                 {
                     b.HasOne("SmartMedicineProject.Models.DoctorUser", "DoctorUser")
@@ -161,6 +268,13 @@ namespace SmartMedicineProject.Migrations
                     b.Navigation("doctorFullInfos");
 
                     b.Navigation("recordModels");
+                });
+
+            modelBuilder.Entity("SmartMedicineProject.Models.RecordModel", b =>
+                {
+                    b.Navigation("analysisModels");
+
+                    b.Navigation("pacientMedCarts");
                 });
 
             modelBuilder.Entity("SmartMedicineProject.Models.RoleModel", b =>

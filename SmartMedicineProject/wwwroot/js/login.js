@@ -22,7 +22,7 @@ function enter() {
             //console.log(data);
             if (JSON.parse(data) === false)
             {
-                errorLabel.innerHTML = 'Неверный логин или пароль!';
+                errorLabel.innerHTML = 'Неверный логин и/или пароль!';
                 setTimeout(function () { errorLabel.innerHTML = ''; }, 2500);
             }
             else

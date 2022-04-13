@@ -13,6 +13,7 @@ namespace SmartMedicineProject.Models
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Patronymic { get; set; }
+        public string PersonalCode { get; set; }
         public int? RoleModelId { get; set; }
         public RoleModel RoleModel { get; set; }     
         public IEnumerable<DoctorFullInfo> doctorFullInfos { get; set; }

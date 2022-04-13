@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SmartMedicineProject.Controllers
 {
@@ -20,7 +21,7 @@ namespace SmartMedicineProject.Controllers
             db = context;
           
         }
-       
+        [Authorize(Roles = "Doctor")]
         public IActionResult MainView()
         {
             string Iden = User.Identity.Name;
