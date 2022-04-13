@@ -8,4 +8,6 @@ openpopup.addEventListener('click', function (e) {
 })
 closepopup.addEventListener('click', () => {
     popup.classList.remove('active');
+    $('#form').trigger('reset');
+
 })

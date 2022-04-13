@@ -10,7 +10,7 @@ using SmartMedicineProject.Models;
 namespace SmartMedicineProject.Migrations
 {
     [DbContext(typeof(SMAppContext))]
-    [Migration("20220413074723_init")]
+    [Migration("20220413101729_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

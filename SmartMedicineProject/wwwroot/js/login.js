@@ -9,6 +9,7 @@ function enter() {
     var email = document.getElementById('email').value;
     var password = document.getElementById('password').value;
     var errorLabel = document.getElementById('errorText');
+    var passwordInput = document.getElementById('password');
 
     $.ajax({       
         type: 'POST',       
@@ -23,6 +24,7 @@ function enter() {
             if (JSON.parse(data) === false)
             {
                 errorLabel.innerHTML = 'Неверный логин и/или пароль!';
+                document.getElementById('password').value = '';
                 setTimeout(function () { errorLabel.innerHTML = ''; }, 2500);
             }
             else
