@@ -1,4 +1,5 @@
-﻿document.forms['form'].onsubmit = function (e) {
+﻿
+document.forms['formRecord'].onsubmit = function (e) {
     e.preventDefault();
     record();
     
@@ -20,9 +21,12 @@ function record() {
                  },
              success: function (data) {                                     
                  labelError.innerHTML = 'Вы успешно записались!';               
-                 $('#form').trigger('reset');
+                 $('#formRecord').trigger('reset');
                  setTimeout(function () { labelError.innerHTML = '';}, 2500);
-                 }
+             },
+             error: function (data) {
+                 alert('Ошибка!');
+             }
              });
     
     }

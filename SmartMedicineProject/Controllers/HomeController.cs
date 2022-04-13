@@ -33,12 +33,14 @@ namespace SmartMedicineProject.Controllers
             return View();
         }
        
-        public async Task<JsonResult> Recording (string fullname, string email, string phonenumber, string address)
+        public async Task<EmptyResult> Recording (string fullname, string email, string phonenumber, string address)
         {
             RecordModel recordModel = new RecordModel {FullName = fullname, Email = email, PhoneNumber = phonenumber, Address = address };
             await db.recordModels.AddAsync(recordModel);
+            PacientMedCart pacientMedCart = new PacientMedCart {RecordModel = recordModel };
+            await db.pacientMedCarts.AddAsync(pacientMedCart);
             await db.SaveChangesAsync();
-            return Json(recordModel);
+            return new EmptyResult();
         }
         [Authorize(Roles = "Admin")]
         public IActionResult Privacy()

@@ -51,11 +51,11 @@ namespace SmartMedicineProject.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Age = table.Column<int>(type: "int", nullable: false),
-                    DateBorn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Age = table.Column<int>(type: "int", nullable: true),
+                    DateBorn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Position = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Education = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Exp = table.Column<int>(type: "int", nullable: false),
+                    Exp = table.Column<int>(type: "int", nullable: true),
                     Adress = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PassportSerialNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TIN_passport = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -125,11 +125,11 @@ namespace SmartMedicineProject.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Age = table.Column<int>(type: "int", nullable: false),
-                    DateBorn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Age = table.Column<int>(type: "int", nullable: true),
+                    DateBorn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Info = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RecordModelId = table.Column<int>(type: "int", nullable: false)
+                    RecordModelId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -139,7 +139,7 @@ namespace SmartMedicineProject.Migrations
                         column: x => x.RecordModelId,
                         principalTable: "recordModels",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(

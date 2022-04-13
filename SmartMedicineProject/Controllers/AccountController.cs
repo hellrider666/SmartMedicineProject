@@ -39,12 +39,15 @@ namespace SmartMedicineProject.Controllers
                     
                     // добавляем пользователя в бд
                     user = new DoctorUser { Email = model.Email, Password = model.Password, Name = model.Name, Surname = model.Surname, Patronymic = model.Patronymic };
+                    DoctorFullInfo doctorFullInfo = new DoctorFullInfo {doctorUser = user };
                     RoleModel roleModel = await db.roleModels.FirstOrDefaultAsync(u => u.Name == "Doctor");
                     if (roleModel != null) 
                     {
                         user.RoleModel = roleModel;
+                       
                     }
-                    db.doctorUsers.Add(user);
+                    await db.doctorFullInfos.AddAsync(doctorFullInfo);
+                    await db.doctorUsers.AddAsync(user);
                     await db.SaveChangesAsync();
 
                     

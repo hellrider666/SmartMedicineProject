@@ -10,7 +10,7 @@ using SmartMedicineProject.Models;
 namespace SmartMedicineProject.Migrations
 {
     [DbContext(typeof(SMAppContext))]
-    [Migration("20220413101729_init")]
+    [Migration("20220413103011_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -60,10 +60,10 @@ namespace SmartMedicineProject.Migrations
                     b.Property<string>("Adress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Age")
+                    b.Property<int?>("Age")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("DateBorn")
+                    b.Property<DateTime?>("DateBorn")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("DoctorUserId")
@@ -72,7 +72,7 @@ namespace SmartMedicineProject.Migrations
                     b.Property<string>("Education")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Exp")
+                    b.Property<int?>("Exp")
                         .HasColumnType("int");
 
                     b.Property<string>("PassportSerialNumber")
@@ -133,16 +133,16 @@ namespace SmartMedicineProject.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Age")
+                    b.Property<int?>("Age")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("DateBorn")
+                    b.Property<DateTime?>("DateBorn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Info")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RecordModelId")
+                    b.Property<int?>("RecordModelId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
@@ -247,9 +247,7 @@ namespace SmartMedicineProject.Migrations
                 {
                     b.HasOne("SmartMedicineProject.Models.RecordModel", "RecordModel")
                         .WithMany("pacientMedCarts")
-                        .HasForeignKey("RecordModelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RecordModelId");
 
                     b.Navigation("RecordModel");
                 });
