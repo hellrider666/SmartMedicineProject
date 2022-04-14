@@ -6,7 +6,7 @@ namespace SmartMedicineProject.Models
     {
         public int ID { get; set; }
         public int? Age { get; set; }
-        public DateTime? DateBorn { get; set; }
+        public string DateBorn { get; set; }
         public string Status { get; set; }
         public string Info { get; set; }
         public int? RecordModelId { get; set; }

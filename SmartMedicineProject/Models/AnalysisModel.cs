@@ -1,5 +1,6 @@
 ﻿using System;
-
+using System.Collections;
+using System.Collections.Generic;
 
 namespace SmartMedicineProject.Models
 {
@@ -7,10 +8,7 @@ namespace SmartMedicineProject.Models
     {
         public int ID { get; set; }
         public string Name { get; set; }
-        public DateTime AnalysisDate { get; set; }
-        public bool Result { get; set; }
-        public string ResultInfo { get; set; }
-        public int RecordModelID { get; set; }
-        public RecordModel RecordModel { get; set; }
+        public IEnumerable <PacientsAnalysis> pacientsAnalyses { get; set; }
+        
     }
 }

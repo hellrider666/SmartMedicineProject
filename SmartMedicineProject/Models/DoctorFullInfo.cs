@@ -9,7 +9,7 @@ namespace SmartMedicineProject.Models
     {
         public int ID { get; set; }
         public int? Age { get; set; }
-        public DateTime? DateBorn { get; set; }
+        public string DateBorn { get; set; }
         public string Position { get; set; }
         public string Education { get; set; }
         public int? Exp { get; set; }

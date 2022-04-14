@@ -25,8 +25,7 @@ namespace SmartMedicineProject.Controllers
         {
             _logger = logger;
             db = context;
-        }
-        
+        }       
         public IActionResult Index()
         {
 

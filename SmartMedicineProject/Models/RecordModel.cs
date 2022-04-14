@@ -12,10 +12,10 @@ namespace SmartMedicineProject.Models
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public string Address { get; set; }
-        public DateTime? RecordDate { get; set; } = DateTime.Now;
+        public string RecordDate { get; set; } = DateTime.Now.ToShortDateString();
         public int? DoctorUserId { get; set; }
         public DoctorUser DoctorUser { get; set; }
         public IEnumerable<PacientMedCart> pacientMedCarts { get; set; }
-        public IEnumerable <AnalysisModel> analysisModels { get; set; }
+        public IEnumerable <PacientsAnalysis> pacientsAnalyses { get; set; }
     }
 }

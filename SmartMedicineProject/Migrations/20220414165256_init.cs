@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SmartMedicineProject.Migrations
 {
@@ -7,6 +6,19 @@ namespace SmartMedicineProject.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "analysisModels",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_analysisModels", x => x.ID);
+                });
+
             migrationBuilder.CreateTable(
                 name: "roleModels",
                 columns: table => new
@@ -52,7 +64,7 @@ namespace SmartMedicineProject.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Age = table.Column<int>(type: "int", nullable: true),
-                    DateBorn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DateBorn = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Position = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Education = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Exp = table.Column<int>(type: "int", nullable: true),
@@ -82,7 +94,7 @@ namespace SmartMedicineProject.Migrations
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RecordDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    RecordDate = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DoctorUserId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -97,36 +109,13 @@ namespace SmartMedicineProject.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "analysisModels",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AnalysisDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Result = table.Column<bool>(type: "bit", nullable: false),
-                    ResultInfo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RecordModelID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_analysisModels", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_analysisModels_recordModels_RecordModelID",
-                        column: x => x.RecordModelID,
-                        principalTable: "recordModels",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "pacientMedCarts",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Age = table.Column<int>(type: "int", nullable: true),
-                    DateBorn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DateBorn = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Info = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RecordModelId = table.Column<int>(type: "int", nullable: true)
@@ -142,6 +131,35 @@ namespace SmartMedicineProject.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "pacientsAnalyses",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AnalysisDate = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Result = table.Column<bool>(type: "bit", nullable: false),
+                    ResultInfo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RecordModelID = table.Column<int>(type: "int", nullable: false),
+                    AnalysisModelId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_pacientsAnalyses", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_pacientsAnalyses_analysisModels_AnalysisModelId",
+                        column: x => x.AnalysisModelId,
+                        principalTable: "analysisModels",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_pacientsAnalyses_recordModels_RecordModelID",
+                        column: x => x.RecordModelID,
+                        principalTable: "recordModels",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "roleModels",
                 columns: new[] { "Id", "Name" },
@@ -152,10 +170,10 @@ namespace SmartMedicineProject.Migrations
                 columns: new[] { "Id", "Name" },
                 values: new object[] { 2, "Doctor" });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_analysisModels_RecordModelID",
-                table: "analysisModels",
-                column: "RecordModelID");
+            migrationBuilder.InsertData(
+                table: "roleModels",
+                columns: new[] { "Id", "Name" },
+                values: new object[] { 3, "Undefined" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_doctorFullInfos_DoctorUserId",
@@ -173,6 +191,16 @@ namespace SmartMedicineProject.Migrations
                 column: "RecordModelId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_pacientsAnalyses_AnalysisModelId",
+                table: "pacientsAnalyses",
+                column: "AnalysisModelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_pacientsAnalyses_RecordModelID",
+                table: "pacientsAnalyses",
+                column: "RecordModelID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_recordModels_DoctorUserId",
                 table: "recordModels",
                 column: "DoctorUserId");
@@ -181,13 +209,16 @@ namespace SmartMedicineProject.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "analysisModels");
-
-            migrationBuilder.DropTable(
                 name: "doctorFullInfos");
 
             migrationBuilder.DropTable(
                 name: "pacientMedCarts");
+
+            migrationBuilder.DropTable(
+                name: "pacientsAnalyses");
+
+            migrationBuilder.DropTable(
+                name: "analysisModels");
 
             migrationBuilder.DropTable(
                 name: "recordModels");

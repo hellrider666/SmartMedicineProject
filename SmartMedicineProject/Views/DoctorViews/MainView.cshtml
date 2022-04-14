@@ -3,3 +3,26 @@
     Layout = "_Layout";
 }
 <h2>Hello, @Html.DisplayFor(Model => Model.FullName) @Html.DisplayFor(Model => Model.Role)</h2>
+
+@if (User.Identity.IsAuthenticated && User.IsInRole("Doctor") || User.Identity.IsAuthenticated && User.IsInRole("Undefined"))
+{
+<div class="navigationBlock">
+    <div class="navigationBlock-cont">
+        <div class="navigationBlock"-body>
+            <ul class="navigation-panel">
+                <li class="navigation-link">
+                    <a class="link" asp-area="" asp-controller="" asp-action="">Личные данные</a>
+                </li>
+                @if(User.Identity.IsAuthenticated && User.IsInRole("Doctor")) { 
+                <li class="navigation-link">
+                    <a class="link" asp-area="" asp-controller="" asp-action="">Пациенты</a>
+                </li>
+                <li class="navigation-link">
+                    <a class="link" asp-area="" asp-controller="Recording" asp-action="JoinRecord">Новые записи</a>
+                </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+}

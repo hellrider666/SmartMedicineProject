@@ -8,6 +8,7 @@ namespace SmartMedicineProject.Models
 {
     public class SMAppContext : DbContext
     {
+        public DbSet<PacientsAnalysis> pacientsAnalyses { get; set; }
         public DbSet<AnalysisModel> analysisModels { get; set; }
         public DbSet<PacientMedCart> pacientMedCarts { get; set; }
         public DbSet<RecordModel> recordModels { get; set; }
@@ -30,7 +31,7 @@ namespace SmartMedicineProject.Models
             RoleModel UserRole = new RoleModel { Id = 2, Name = doctorRoleName };
             RoleModel UndefinedRole = new RoleModel { Id = 3, Name = undefinedRoleName };
 
-            modelBuilder.Entity<RoleModel>().HasData(new RoleModel[] { AdminRole, UserRole });
+            modelBuilder.Entity<RoleModel>().HasData(new RoleModel[] { AdminRole, UserRole, UndefinedRole });
             base.OnModelCreating(modelBuilder);
         }
     }
