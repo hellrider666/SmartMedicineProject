@@ -27,6 +27,11 @@ namespace SmartMedicineProject.Controllers
         {
             return View();
         }
+        [HttpGet] 
+        public IActionResult errorRole()
+        {
+            return Content("Доступ запрещен!");
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)

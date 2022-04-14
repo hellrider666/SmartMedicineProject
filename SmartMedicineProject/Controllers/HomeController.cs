@@ -45,7 +45,7 @@ namespace SmartMedicineProject.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Privacy()
         {
-            return View();
+            return Content("Вход только для администрации!");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

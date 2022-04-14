@@ -21,7 +21,7 @@ namespace SmartMedicineProject.Controllers
             db = context;
           
         }
-        [Authorize(Roles = "Doctor")]
+        [Authorize(Roles = "Doctor, Admin")]
         public IActionResult MainView()
         {
             string Iden = User.Identity.Name;
