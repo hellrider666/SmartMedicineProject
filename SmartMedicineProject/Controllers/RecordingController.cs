@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SmartMedicineProject.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace SmartMedicineProject.Controllers
 {
@@ -53,6 +54,48 @@ namespace SmartMedicineProject.Controllers
             }
             DateTime dateTime = DateTime.MinValue;
             return RedirectToAction("JoinRecord", "Recording");
+        }
+        public IActionResult PacientsInfo(string _PhoneNumber, DateTime date)
+        {
+            string Iden = User.Identity.Name;
+            var Doctor = db.doctorUsers.Where(u => u.Email == Iden).FirstOrDefault();           
+
+            IQueryable<RecordModel> _recordModels = db.recordModels.Where(c => c.DoctorUser == Doctor);
+            if (_PhoneNumber != null)
+            {
+                _recordModels = _recordModels.Where(p => p.PhoneNumber == _PhoneNumber);
+            }
+            if (date != DateTime.MinValue)
+            {
+                _recordModels = _recordModels.Where(p => p.RecordDate == date.ToShortDateString());
+            }
+
+
+            PacientsInfoViewModel pacientsInfoViewModel = new PacientsInfoViewModel
+            {
+                recordModels = _recordModels,
+                PhoneNumber = _PhoneNumber,
+                RecordDate = date.ToShortDateString()
+            };
+            return View(pacientsInfoViewModel);
+        }
+        [HttpGet]
+        public async Task<JsonResult> GetInfo(int ID)
+        {
+            var PacientInfo = await db.pacientMedCarts.Where(u => u.RecordModelId == ID).FirstOrDefaultAsync();
+            
+            return Json(PacientInfo);
+        }
+        public async Task<EmptyResult> UpdateInfo(int id, int age, string dateBorn, string status, string info)
+        {
+            var Pacient = await db.pacientMedCarts.Where(u => u.RecordModelId == id).FirstOrDefaultAsync();
+            Pacient.Age = age;
+            Pacient.DateBorn = dateBorn;
+            Pacient.Status = status;
+            Pacient.Info = info;
+            await db.SaveChangesAsync();
+
+            return new EmptyResult();
         }
     }
 }

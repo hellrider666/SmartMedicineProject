@@ -15,7 +15,7 @@
                 </li>
                 @if(User.Identity.IsAuthenticated && User.IsInRole("Doctor")) { 
                 <li class="navigation-link">
-                    <a class="link" asp-area="" asp-controller="" asp-action="">Пациенты</a>
+                    <a class="link" asp-area="" asp-controller="Recording" asp-action="PacientsInfo">Пациенты</a>
                 </li>
                 <li class="navigation-link">
                     <a class="link" asp-area="" asp-controller="Recording" asp-action="JoinRecord">Новые записи</a>
