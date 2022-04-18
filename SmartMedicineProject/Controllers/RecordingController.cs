@@ -97,5 +97,12 @@ namespace SmartMedicineProject.Controllers
 
             return new EmptyResult();
         }
+        public async Task<EmptyResult> AgeUpdate(int id, int age)
+        {
+            var Pacient = await db.pacientMedCarts.Where(u => u.RecordModelId == id).FirstOrDefaultAsync();
+            Pacient.Age = age;
+
+            return new EmptyResult();
+        }
     }
 }

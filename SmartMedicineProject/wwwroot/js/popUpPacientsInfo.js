@@ -1,4 +1,6 @@
-﻿document.forms['form_info'].onsubmit = function (e) {
+﻿
+
+document.forms['form_info'].onsubmit = function (e) {
     e.preventDefault();
     UpdtaeData();
 }
@@ -6,6 +8,8 @@
 const openpopup = document.getElementById('open_pop_up_info');
 const closepopup = document.getElementById('close_pop_up_info');
 const popup = document.getElementById('pop_up_info');
+
+
 
 openpopup.addEventListener('click', function (e) {
     e.preventDefault();
@@ -30,34 +34,9 @@ function GetData(id) {
         dataType: 'Json',
         
         success: function (data) {
-            console.log(data);
-            var date = new Date(data.dateBorn);
-
-            var d = date.getDate();
-            var m = date.getMonth() + 1;
-            [d, m] = [m, d];
-            var y = date.getFullYear();
-            if (d < 10) {
-                d = '0' + d;
-            }
-            if (m < 10) {
-                m = '0' + m;
-            }
-
-            var strBd = m + ',' + d + ',' + y;            
-            bddate = new Date(strBd);
-
-            var now = new Date();
-            var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-            var dob = new Date(strBd);
-            var dobnow = new Date(today.getFullYear(), dob.getMonth(), dob.getDate());
-            var age;
-            age = today.getFullYear() - dob.getFullYear();
-            if (today < dobnow) {
-                age = age - 1;
-            }
-
-            document.getElementById('age').value = age;
+            console.log(data);          
+            document.getElementById('age').value = data.age;
+            AgeUpdate(data.dateBorn, data.age);
             document.getElementById('dateBorn').value = data.dateBorn;
             document.getElementById('status').value = data.status;
             document.getElementById('info').value = data.info;
@@ -101,21 +80,78 @@ function datePicker() {
     if (m < 10) {
         m = '0' + m;
     }
-    var str = d + '.' + m + '.' + y
+    var strDate = d + '.' + m + '.' + y
 
-    document.getElementById('dateBorn').value = str.toString();
+    document.getElementById('dateBorn').value = strDate.toString();
 
     var strBd = y + ',' + m + ',' + d;
-
+    var age = AgeBuilder(strBd);
+    document.getElementById('age').value = age;
+   
+}
+function AgeBuilder(date) {
 
     var now = new Date();
     var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    var dob = new Date(strBd);
+    var dob = new Date(date);
     var dobnow = new Date(today.getFullYear(), dob.getMonth(), dob.getDate());
     var age;
     age = today.getFullYear() - dob.getFullYear();
     if (today < dobnow) {
         age = age - 1;
     }
-    document.getElementById('age').value = age.toString();
+    if (age < 0) {
+        age = 0;
+    }
+ 
+    return age;
+}
+
+function AgeUpdate(date,ageB) {
+
+
+
+    if (ageB != null) {
+
+        var DateBd = JSON.stringify(date);
+        var strBd = DateBd.replace(/\./g, ',');
+        var FinishStr = strBd.replace(/([^,]+)\s,([^,]+)/, "$2 ,$1");
+        console.log(DateBd);
+        console.log(strBd);
+        var dateB = new Date(DateBd);
+        console.log(dateB);
+        var d = dateB.getDate();
+        var m = dateB.getMonth() + 1;
+        var age;
+        [d, m] = [m, d];
+        var y = dateB.getFullYear();
+        if (d < 10) {
+            d = '0' + d;
+        }
+        if (m < 10) {
+            m = '0' + m;
+        }
+
+        var strBd = m + ',' + d + ',' + y;
+        
+        age = AgeBuilder(strBd);
+        
+        if (age > ageB) {
+            $.ajax({
+                url: '../Recording/AgeUpdate',
+                data: {
+                    id: pacintId,
+                    age: age
+                },
+                success: function (data) {
+                    age = data.age;
+                },
+                error: function (data) {
+                    alert('Ошибка!');
+                }
+            })
+            document.getElementById('age').value = age;
+        }
+        
+    }          
 }
