@@ -21,8 +21,7 @@ namespace SmartMedicineProject.Controllers
         [HttpGet]
         [Authorize(Roles = "Doctor")]
         public IActionResult JoinRecord(string _PhoneNumber, DateTime date)
-        {
-            
+        {           
             IQueryable<RecordModel> _recordModels = db.recordModels.Where(c => c.DoctorUser == null);
             if (_PhoneNumber != null )
             {
@@ -32,13 +31,11 @@ namespace SmartMedicineProject.Controllers
             {
                 _recordModels = _recordModels.Where(p => p.RecordDate == date.ToShortDateString());
             }
-
-
             RecrordingListViewModel recrordingListViewModel = new RecrordingListViewModel
             {
                recordModels = _recordModels,
-               PhoneNumber = _PhoneNumber,
-               RecordDate = date.ToShortDateString()
+              // PhoneNumber = _PhoneNumber,
+              // RecordDate = date.ToShortDateString()
             };         
             return View(recrordingListViewModel);
         }
@@ -55,7 +52,20 @@ namespace SmartMedicineProject.Controllers
             DateTime dateTime = DateTime.MinValue;
             return RedirectToAction("JoinRecord", "Recording");
         }
-        public IActionResult PacientsInfo(string _PhoneNumber, DateTime date)
+        public IActionResult PacientsInfo()
+        {
+            string Iden = User.Identity.Name;
+            var Doctor = db.doctorUsers.Where(u => u.Email == Iden).FirstOrDefault();
+            IQueryable<RecordModel> _recordModels = db.recordModels.Where(c => c.DoctorUser == Doctor);
+            
+            PacientsInfoViewModel pacientsInfoViewModel = new PacientsInfoViewModel
+            {
+                recordModels = _recordModels,               
+            };
+            return View(pacientsInfoViewModel);
+        }
+
+        public IActionResult PartialViewPacientList(string _PhoneNumber, DateTime date)
         {
             string Iden = User.Identity.Name;
             var Doctor = db.doctorUsers.Where(u => u.Email == Iden).FirstOrDefault();           
@@ -77,7 +87,7 @@ namespace SmartMedicineProject.Controllers
                 PhoneNumber = _PhoneNumber,
                 RecordDate = date.ToShortDateString()
             };
-            return View(pacientsInfoViewModel);
+            return PartialView(pacientsInfoViewModel);
         }
         [HttpGet]
         public async Task<JsonResult> GetInfo(int ID)
@@ -97,12 +107,12 @@ namespace SmartMedicineProject.Controllers
 
             return new EmptyResult();
         }
-        public async Task<EmptyResult> AgeUpdate(int id, int age)
+       /* public async Task<EmptyResult> AgeUpdate(int id, int age)
         {
             var Pacient = await db.pacientMedCarts.Where(u => u.RecordModelId == id).FirstOrDefaultAsync();
             Pacient.Age = age;
 
             return new EmptyResult();
-        }
+        }*/
     }
 }

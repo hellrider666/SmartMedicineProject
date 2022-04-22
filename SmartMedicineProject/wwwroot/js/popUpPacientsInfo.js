@@ -1,31 +1,16 @@
 ﻿
-
 document.forms['form_info'].onsubmit = function (e) {
     e.preventDefault();
     UpdtaeData();
 }
 
-const openpopup = document.getElementById('open_pop_up_info');
-const closepopup = document.getElementById('close_pop_up_info');
-const popup = document.getElementById('pop_up_info');
-
-
-
-openpopup.addEventListener('click', function (e) {
-    e.preventDefault();
-    popup.classList.add('active');
-})
-closepopup.addEventListener('click', () => {
-    popup.classList.remove('active');
-    $('#form').trigger('reset');
-
-})
-
 var pacintId;
 
 function GetData(id) {
+    document.getElementById('pop_up_info').classList.add('active');
     pacintId = id;   
     $.ajax({
+        
         type: 'GET',
         url: '../Recording/GetInfo',
         data: {
@@ -36,7 +21,7 @@ function GetData(id) {
         success: function (data) {
             console.log(data);          
             document.getElementById('age').value = data.age;
-            AgeUpdate(data.dateBorn, data.age);
+            //AgeUpdate(data.dateBorn, data.age);
             document.getElementById('dateBorn').value = data.dateBorn;
             document.getElementById('status').value = data.status;
             document.getElementById('info').value = data.info;
@@ -81,7 +66,6 @@ function datePicker() {
         m = '0' + m;
     }
     var strDate = d + '.' + m + '.' + y
-
     document.getElementById('dateBorn').value = strDate.toString();
 
     var strBd = y + ',' + m + ',' + d;
@@ -106,10 +90,11 @@ function AgeBuilder(date) {
  
     return age;
 }
-
-function AgeUpdate(date,ageB) {
-
-
+function ClosePopUp() {
+    document.getElementById('pop_up_info').classList.remove('active');
+    $('#form').trigger('reset');
+}
+/*function AgeUpdate(date,ageB) {
 
     if (ageB != null) {
 
@@ -154,4 +139,4 @@ function AgeUpdate(date,ageB) {
         }
         
     }          
-}
+}*/

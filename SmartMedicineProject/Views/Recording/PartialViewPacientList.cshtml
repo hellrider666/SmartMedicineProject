@@ -1,0 +1,53 @@
+﻿@model SmartMedicineProject.ViewModels.PacientsInfoViewModel; 
+
+ <link rel="stylesheet" href="~/css/popUpPacientsInfo.css" />
+<div id="List">
+    <table id="tableList" class="table">
+        @if (Model.recordModels.Count() > 0)
+        {
+            @foreach (var item in Model.recordModels)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Address)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RecordDate)
+                    </td>
+                    <td>
+                        <a href="#"  title="Взять в работу" onclick="GetData(@item.ID)">&#9989</a>
+                        <a asp-action="" title="Удалить" asp-route-id="">&#10060</a>
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+
+    <div class="pop_up_info" id="pop_up_info">
+        <div class="pop_up_cont_info">
+            <div class="pop_up_body_info">
+                <p>Информация</p>
+                <form id="form_info">
+                    <input id="age" type="text" placeholder="Возраст" readonly required>
+                    <input id="dateBorn" type="text" placeholder="Дата рождения" readonly required>
+                    <input id="dateBornPicker" type="date" onchange="datePicker()" />
+                    <input id="status" type="text" placeholder="Статус" required>
+                    <textarea cols="10" id="info" type="text" placeholder="Информация" required></textarea>
+                    <button type="submit">Обновить</button>
+                </form>
+                <div class="pop_up_error_info"><label id="errorText_info"></label></div>
+                <div onclick="ClosePopUp()" class="pop_up_close_info">&#10006</div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/popUpPacientsInfo.js"></script>
