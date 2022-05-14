@@ -79,7 +79,10 @@ namespace SmartMedicineProject.Controllers
             {
                 _recordModels = _recordModels.Where(p => p.RecordDate == date.ToShortDateString());
             }
-
+            if(_PhoneNumber == null && date == DateTime.MinValue)
+            {
+                return new EmptyResult();
+            }
 
             PacientsInfoViewModel pacientsInfoViewModel = new PacientsInfoViewModel
             {

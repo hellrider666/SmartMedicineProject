@@ -13,10 +13,14 @@
 <div class="form-inline form-group">
     <label class="control-label">Номер телефона: </label>
     <input name="_PhoneNumber" id="phonenumber" class="form-control">
+    <input type="button" value="&#10006" title="Очистить" id="clearButton" />
     <input type="date" name="date" id="date" class="form-control">
     <input type="button" value="Найти" id="search" class="btn btn-default" />
-</div>
 
+</div>
+<script type="text/javascript">
+    
+</script>
 <thead>
     <table class="table">
         <tr>
@@ -54,6 +58,12 @@
             $('#PacientsList').load('@Url.Action("PartialViewPacientList", "Recording")?_PhoneNumber=' + phonenumber, 'date=' + date)
         });
     });
+    $('#clearButton').click(function (e) {
+        $('#phonenumber').val(null);
+    });
+   
+
+
 </script>
 
 
