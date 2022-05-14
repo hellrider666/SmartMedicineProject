@@ -62,9 +62,10 @@ namespace SmartMedicineProject.Controllers
             {
                 recordModels = _recordModels,               
             };
-            return View(pacientsInfoViewModel);
+            return PartialView(pacientsInfoViewModel);
         }
-
+        
+        
         public IActionResult PartialViewPacientList(string _PhoneNumber, DateTime date)
         {
             string Iden = User.Identity.Name;

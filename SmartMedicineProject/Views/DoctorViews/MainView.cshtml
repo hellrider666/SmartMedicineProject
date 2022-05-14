@@ -1,7 +1,5 @@
 ﻿@model SmartMedicineProject.ViewModels.MainViewModel;
-@{ 
-    Layout = "_Layout";
-}
+
 <link rel="stylesheet" href="~/css/Record_pop_up.css" />
 
 <h2>Hello, @Html.DisplayFor(Model => Model.FullName) @Html.DisplayFor(Model => Model.Role)</h2>
@@ -17,13 +15,13 @@
                 </li>
                 @if(User.Identity.IsAuthenticated && User.IsInRole("Doctor")) { 
                 <li class="navigation-link">
-                    <a class="link" asp-area="" asp-controller="Recording" asp-action="PacientsInfo">Пациенты</a>
+                    <a class="link" href="#" id="OpenRecordsView">Пациенты</a>
                 </li>
                 <li class="navigation-link">
                     <a class="link" asp-area="" asp-controller="Recording" asp-action="JoinRecord">Новые записи</a>
                 </li>
                 <li class="navigation-link">
-                    <a href="#" onclick="OpenPopUp()" id="open_record_pop_up">Новая запись</a>
+                    <a href="#" onclick="OpenRecordPopUp()" id="open_record_pop_up">Новая запись</a>
                 </li>
                 }
             </ul>
@@ -31,6 +29,9 @@
     </div>
 </div>
 }
+<div id="PartialViews">
+
+</div>
 <div class="record_panel_pop_up" id="rpandel_pop_up">
     <div class="record_panel_cont_pop_up">
         <div class="record_panel_body_pop_up">
@@ -42,9 +43,19 @@
                 <input type="text" id="Address" placeholder="Адрес" required>
                 <button type="submit" class="btn btn-outline-dark">Создать запись</button>
             </form>
-            <div id="record_panel_close_pop_up" onclick="ClosePopUp()" class="pop_up_close">&#10006</div>
+            <div id="record_panel_close_pop_up" onclick="CloseRecordPopUp()" class="pop_up_close">&#10006</div>
             <p id="record_panel_error_pop_up" style="color:forestgreen;"></p>
         </div>
     </div>
 </div>
+
 <script src="~/js/PopUpRecordPanel.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+    debugger;
+    $('#OpenRecordsView').click(function (e) {
+        $('#PartialViews').load('@Url.Action("PacientsInfo", "Recording")')
+    });
+});
+</script>

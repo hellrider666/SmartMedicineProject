@@ -1,8 +1,8 @@
 ﻿
-function OpenPopUp() {
+function OpenRecordPopUp() {
     document.getElementById('rpandel_pop_up').classList.add('active');
 }
-function ClosePopUp() {
+function CloseRecordPopUp() {
     document.getElementById('rpandel_pop_up').classList.remove('active');
 }
 

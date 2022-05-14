@@ -1,7 +1,4 @@
 ﻿@model SmartMedicineProject.ViewModels.PacientsInfoViewModel;
-@{
-    Layout = "_Layout";
-}
 
 <link rel="stylesheet" href="~/css/popUpPacientsInfo.css" />
 
@@ -46,7 +43,7 @@
 <div id="PacientsList">
     
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 <script type="text/javascript">
     $(document).ready(function () {
         $('#search').click(function (e) {
@@ -57,13 +54,11 @@
             date = encodeURIComponent(date);
             $('#PacientsList').load('@Url.Action("PartialViewPacientList", "Recording")?_PhoneNumber=' + phonenumber, 'date=' + date)
         });
-    });
-    $('#clearButton').click(function (e) {
-        $('#phonenumber').val(null);
-    });
-   
 
-
+        $('#clearButton').click(function (e) {
+            $('#phonenumber').val(null);
+        });
+    });
 </script>
 
 
