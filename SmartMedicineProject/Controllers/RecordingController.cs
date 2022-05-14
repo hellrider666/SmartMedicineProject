@@ -20,7 +20,18 @@ namespace SmartMedicineProject.Controllers
         }
         [HttpGet]
         [Authorize(Roles = "Doctor")]
-        public IActionResult JoinRecord(string _PhoneNumber, DateTime date)
+
+        public IActionResult JoinRecord()
+        {
+            IQueryable<RecordModel> _recordModels = db.recordModels.Where(u => u.DoctorUser == null);
+
+            RecrordingListViewModel RecordList = new RecrordingListViewModel
+            {
+                recordModels = _recordModels,
+            };
+            return PartialView(RecordList);
+        }
+        public IActionResult JoinRecordsList(string _PhoneNumber, DateTime date)
         {           
             IQueryable<RecordModel> _recordModels = db.recordModels.Where(c => c.DoctorUser == null);
             if (_PhoneNumber != null )
@@ -31,13 +42,17 @@ namespace SmartMedicineProject.Controllers
             {
                 _recordModels = _recordModels.Where(p => p.RecordDate == date.ToShortDateString());
             }
-            RecrordingListViewModel recrordingListViewModel = new RecrordingListViewModel
+            if (_PhoneNumber == null && date == DateTime.MinValue)
+            {
+                return new EmptyResult();
+            }
+            RecrordingListViewModel RecordList = new RecrordingListViewModel
             {
                recordModels = _recordModels,
-              // PhoneNumber = _PhoneNumber,
-              // RecordDate = date.ToShortDateString()
+                PhoneNumber = _PhoneNumber,
+                RecordDate = date.ToShortDateString()
             };         
-            return View(recrordingListViewModel);
+            return PartialView(RecordList);
         }
         public RedirectToActionResult JoinPacient(int? id)
         {

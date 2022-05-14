@@ -18,7 +18,7 @@
                     <a class="link" href="#" id="OpenRecordsView">Пациенты</a>
                 </li>
                 <li class="navigation-link">
-                    <a class="link" asp-area="" asp-controller="Recording" asp-action="JoinRecord">Новые записи</a>
+                    <a href="#" class="link" id="OpenJoinView">Новые записи</a>
                 </li>
                 <li class="navigation-link">
                     <a href="#" onclick="OpenRecordPopUp()" id="open_record_pop_up">Новая запись</a>
@@ -56,6 +56,9 @@
     debugger;
     $('#OpenRecordsView').click(function (e) {
         $('#PartialViews').load('@Url.Action("PacientsInfo", "Recording")')
+    });
+    $('#OpenJoinView').click(function (e) {
+        $('#PartialViews').load('@Url.Action("JoinRecord", "Recording")')
     });
 });
 </script>

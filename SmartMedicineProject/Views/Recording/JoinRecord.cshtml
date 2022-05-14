@@ -1,74 +1,63 @@
 ﻿@model SmartMedicineProject.ViewModels.RecrordingListViewModel;
-@{
-    Layout = "_Layout";
-}
-<h1>Index</h1>
 
-<form method="get">
-    <table class="table">
-        <div class="form-inline form-group">
-            <label class="control-label">Номер телефона: </label>
-            <input name="_PhoneNumber" class="form-control">
-            <input type="date" name="date" class="form-control">
-            <input type="submit" value="Найти" class="btn btn-default" />
-        </div>
-</form>
-    <div>
-        <label class="control-label">Результаты поиска по: </label>
-        @if (Model.RecordDate != DateTime.MinValue.ToShortDateString())
+<link rel="stylesheet" href="~/css/popUpPacientsInfo.css" />
 
-        {
-           <label>Дате</label> @Html.DisplayFor(Model => Model.RecordDate);
+<h1>Новые записи</h1>
+<div class="nav-link text-dark">
 
-        }
-        @if (Model.PhoneNumber != null) {
-           <label>Тел.</label> @Html.DisplayFor(Model => Model.PhoneNumber);
-        }
-    </div>
+</div>
+
+<div class="form-inline form-group">
+    <label class="control-label">Номер телефона: </label>
+    <input name="_PhoneNumber" id="phonenumber" class="form-control">
+    <input type="button" value="&#10006" title="Очистить" id="clearButton" />
+    <input type="date" name="date" id="date" class="form-control">
+    <input type="button" value="Найти" id="searchRecord" class="btn btn-default" />
+
+</div>
+<script type="text/javascript">
+
+</script>
 <thead>
-    <tr>
-        <th>
-            @Html.DisplayName("ФИО")
-        </th>
-        <th>
-            @Html.DisplayName("Ел. Почта")
-        </th>
-        <th>
-            @Html.DisplayName("Адрес")
-        </th>
-        <th>
-            @Html.DisplayName("Номер")
-        </th>
-        <th>
-            @Html.DisplayName("Дата Записи")
-        </th>
-
-    </tr>
-</thead>
-<tbody>
-    @foreach (var item in Model.recordModels)
-    {
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhoneNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RecordDate)
-            </td>
-            <td>
-                <a asp-action="JoinPacient" title="Взять в работу" asp-route-id="@item.ID">&#9989</a>
-                <a asp-action="Delete" title="Удалить" asp-route-id="">&#10060</a>
-            </td>
+            <th>
+                @Html.DisplayName("ФИО")
+            </th>
+            <th>
+                @Html.DisplayName("Ел. Почта")
+            </th>
+            <th>
+                @Html.DisplayName("Адрес")
+            </th>
+            <th>
+                @Html.DisplayName("Номер")
+            </th>
+            <th>
+                @Html.DisplayName("Дата Записи")
+            </th>
+
         </tr>
-    }
-</tbody>
-</table>
+    </table>
+</thead>
+<div id="JoinPacientsList">
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#searchRecord').click(function (e) {
+            e.preventDefault();
+            var phonenumber = $('#phonenumber').val();
+            var date = $('#date').val();
+            phonenumber = encodeURIComponent(phonenumber);
+            date = encodeURIComponent(date);
+            $('#JoinPacientsList').load('@Url.Action("JoinRecordsList", "Recording")?_PhoneNumber=' + phonenumber, 'date=' + date)
+        });
+
+        $('#clearButton').click(function (e) {
+            $('#phonenumber').val(null);
+        });
+    });
+</script>
+
