@@ -54,7 +54,8 @@ namespace SmartMedicineProject.Controllers
             };         
             return PartialView(RecordList);
         }
-        public RedirectToActionResult JoinPacient(int? id)
+        
+        public EmptyResult JoinPacient(int? id)
         {
             if (id != null && id != 0)
             {
@@ -64,8 +65,8 @@ namespace SmartMedicineProject.Controllers
                 pacient.DoctorUserId = Doctor.Id;
                 db.SaveChangesAsync();               
             }
-            DateTime dateTime = DateTime.MinValue;
-            return RedirectToAction("JoinRecord", "Recording");
+           // DateTime dateTime = DateTime.MinValue;
+            return new EmptyResult();
         }
         public IActionResult PacientsInfo()
         {

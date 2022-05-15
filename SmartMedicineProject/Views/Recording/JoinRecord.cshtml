@@ -47,17 +47,31 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#searchRecord').click(function (e) {
-            e.preventDefault();
             var phonenumber = $('#phonenumber').val();
             var date = $('#date').val();
             phonenumber = encodeURIComponent(phonenumber);
-            date = encodeURIComponent(date);
-            $('#JoinPacientsList').load('@Url.Action("JoinRecordsList", "Recording")?_PhoneNumber=' + phonenumber, 'date=' + date)
-        });
-
+            date = encodeURIComponent(date);                                                       
+            $('#JoinPacientsList').load('@Url.Action("JoinRecordsList", "Recording")?_PhoneNumber=' + phonenumber, 'date=' + date)                                   
+            });
+    
         $('#clearButton').click(function (e) {
             $('#phonenumber').val(null);
-        });
+        });       
     });
+    function JoinPacient(Id) {
+        $.ajax({           
+            url: '../Recording/JoinPacient',
+            data: {
+                id: Id
+            },            
+            success: function (data) {
+                alert("Пациент взят в работу!")
+                document.querySelector('#searchRecord').click();
+            },
+            error: function (data) {                
+                alert('Ошибка');
+            }
+        });
+    }
 </script>
 
