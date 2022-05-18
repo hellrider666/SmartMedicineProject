@@ -21,7 +21,7 @@ namespace SmartMedicineProject.Controllers
         [HttpGet]
         [Authorize(Roles = "Doctor")]
 
-        public async Task<IActionResult> JoinRecord()
+        public IActionResult JoinRecord()
         {
             IQueryable<RecordModel> _recordModels =  db.recordModels.Where(u => u.DoctorUser == null);
 
