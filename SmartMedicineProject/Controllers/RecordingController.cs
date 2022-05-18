@@ -21,9 +21,9 @@ namespace SmartMedicineProject.Controllers
         [HttpGet]
         [Authorize(Roles = "Doctor")]
 
-        public IActionResult JoinRecord()
+        public async Task<IActionResult> JoinRecord()
         {
-            IQueryable<RecordModel> _recordModels = db.recordModels.Where(u => u.DoctorUser == null);
+            IQueryable<RecordModel> _recordModels =  db.recordModels.Where(u => u.DoctorUser == null);
 
             RecrordingListViewModel RecordList = new RecrordingListViewModel
             {
@@ -55,23 +55,23 @@ namespace SmartMedicineProject.Controllers
             return PartialView(RecordList);
         }
         
-        public EmptyResult JoinPacient(int? id)
+        public async Task<EmptyResult> JoinPacient(int? id)
         {
             if (id != null && id != 0)
             {
                 string Iden = User.Identity.Name;
-                var Doctor = db.doctorUsers.Where(u => u.Email == Iden).FirstOrDefault();
-                var pacient = db.recordModels.Where(u => u.ID == id).FirstOrDefault();
+                var Doctor = await db.doctorUsers.Where(u => u.Email == Iden).FirstOrDefaultAsync();
+                var pacient =await db.recordModels.Where(u => u.ID == id).FirstOrDefaultAsync();
                 pacient.DoctorUserId = Doctor.Id;
-                db.SaveChangesAsync();               
+                await db.SaveChangesAsync();               
             }
            // DateTime dateTime = DateTime.MinValue;
             return new EmptyResult();
         }
-        public IActionResult PacientsInfo()
+        public async Task<IActionResult> PacientsInfo()
         {
             string Iden = User.Identity.Name;
-            var Doctor = db.doctorUsers.Where(u => u.Email == Iden).FirstOrDefault();
+            var Doctor = await db.doctorUsers.Where(u => u.Email == Iden).FirstOrDefaultAsync();
             IQueryable<RecordModel> _recordModels = db.recordModels.Where(c => c.DoctorUser == Doctor);
             
             PacientsInfoViewModel pacientsInfoViewModel = new PacientsInfoViewModel
@@ -82,10 +82,10 @@ namespace SmartMedicineProject.Controllers
         }
         
         
-        public IActionResult PartialViewPacientList(string _PhoneNumber, DateTime date)
+        public async Task<IActionResult> PartialViewPacientList(string _PhoneNumber, DateTime date)
         {
             string Iden = User.Identity.Name;
-            var Doctor = db.doctorUsers.Where(u => u.Email == Iden).FirstOrDefault();           
+            var Doctor = await db.doctorUsers.Where(u => u.Email == Iden).FirstOrDefaultAsync();           
 
             IQueryable<RecordModel> _recordModels = db.recordModels.Where(c => c.DoctorUser == Doctor);
             if (_PhoneNumber != null)

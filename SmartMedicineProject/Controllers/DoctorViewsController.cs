@@ -22,10 +22,10 @@ namespace SmartMedicineProject.Controllers
           
         }
         [Authorize(Roles = "Doctor, Admin")]
-        public IActionResult MainView()
+        public async Task<IActionResult> MainView()
         {
             string Iden = User.Identity.Name;
-            var Doctor = db.doctorUsers.Where(u => u.Email == Iden).Include(p=>p.RoleModel).FirstOrDefault();
+            var Doctor = await db.doctorUsers.Where(u => u.Email == Iden).Include(p=>p.RoleModel).FirstOrDefaultAsync();
             MainViewModel mainViewModel = new MainViewModel
             {
                 FullName = Doctor.Surname + " " + Doctor.Name + " " + Doctor.Patronymic,
